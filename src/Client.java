@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -181,13 +182,24 @@ public class Client extends JFrame {
 				second_number = 0;
 			}
 			allTime = hour_number * 3600 + minute_number * 60 + second_number;
-			String command = "cmd /c shutdown -s -t "+allTime;
-			new ProcessThread(command).start();
+			if(allTime==0) {
+				int value = JOptionPane.showConfirmDialog(contentPane, "确定立刻关机?","提示",JOptionPane.YES_NO_CANCEL_OPTION);
+				if(value == JOptionPane.YES_OPTION){
+					String command = "cmd /c shutdown -s -t "+allTime;
+					new ProcessThread(command).start();
+				}
+				else {}
+			}
+			else {
+				String command = "cmd /c shutdown -s -t "+allTime;
+				new ProcessThread(command).start();
+			}
 		}
 	}
 	private class Button_1ActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			new ProcessStopThread().start();
+			JOptionPane.showMessageDialog(contentPane, "已停止任务。");
 		}
 	}
 	TimeThread timeThread;
